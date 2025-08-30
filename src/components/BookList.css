@@ -1,0 +1,237 @@
+.book-list-container {
+  margin-top: 30px;
+}
+
+.book-list-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.results-info h2 {
+  margin: 0;
+  color: #374151;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.filter-info {
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+.controls {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 150px;
+}
+
+.control-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.control-select {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.control-select:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+/* No Results States */
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.no-results-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.7;
+}
+
+.no-results h2 {
+  color: #374151;
+  margin: 0 0 15px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.no-results p {
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin: 0 0 30px;
+  line-height: 1.6;
+}
+
+.search-tips {
+  text-align: left;
+  background: #f8fafc;
+  border-radius: 15px;
+  padding: 25px;
+  margin-top: 30px;
+}
+
+.search-tips h3 {
+  color: #374151;
+  margin: 0 0 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.search-tips ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.search-tips li {
+  color: #6b7280;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.search-tips li::before {
+  content: '✨';
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.no-filtered-results {
+  text-align: center;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  margin-top: 30px;
+}
+
+.no-filtered-results p {
+  color: #6b7280;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.clear-filter-button {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.clear-filter-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .book-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .book-list-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .control-group {
+    min-width: 120px;
+  }
+  
+  .book-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+  }
+  
+  .results-info h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .controls {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .control-group {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .book-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  
+  .no-results {
+    padding: 40px 15px;
+  }
+  
+  .search-tips {
+    padding: 20px;
+  }
+}

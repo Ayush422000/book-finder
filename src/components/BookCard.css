@@ -1,0 +1,263 @@
+.book-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transition: all 0.4s ease;
+  cursor: pointer;
+  position: relative;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.book-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+.book-cover-container {
+  position: relative;
+  height: 250px;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  overflow: hidden;
+}
+
+.book-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.4s ease;
+}
+
+.book-cover.hidden {
+  opacity: 0;
+}
+
+.cover-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  color: #6b7280;
+  text-align: center;
+  padding: 20px;
+}
+
+.cover-placeholder.loading {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+}
+
+.placeholder-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.book-icon {
+  font-size: 2.5rem;
+  opacity: 0.6;
+}
+
+.placeholder-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #374151;
+}
+
+.loading-spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.favorite-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.favorite-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.favorite-button.favorited {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  animation: heartbeat 0.6s ease;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.book-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 180px;
+}
+
+.book-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #374151;
+  margin: 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.book-author {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 500;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.book-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 8px 0;
+}
+
+.publish-year,
+.rating,
+.pages {
+  font-size: 0.8rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.rating.user-rating {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+  border: 1px solid #f59e0b;
+}
+
+.book-subjects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+  flex: 1;
+}
+
+.subject-tag {
+  background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
+  color: #5b21b6;
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.subject-tag.more {
+  background: #e5e7eb;
+  color: #6b7280;
+}
+
+.book-publisher {
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin: 0;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .book-cover-container {
+    height: 200px;
+  }
+  
+  .book-info {
+    padding: 15px;
+    height: 160px;
+  }
+  
+  .book-title {
+    font-size: 1rem;
+  }
+  
+  .book-author {
+    font-size: 0.9rem;
+  }
+  
+  .favorite-button {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .book-cover-container {
+    height: 180px;
+  }
+  
+  .book-info {
+    padding: 12px;
+    height: 140px;
+  }
+  
+  .book-meta {
+    gap: 8px;
+  }
+  
+  .publish-year,
+  .rating,
+  .pages {
+    font-size: 0.75rem;
+    padding: 3px 6px;
+  }
+  
+  .subject-tag {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+  }
+}
