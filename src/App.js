@@ -9,6 +9,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import ErrorMessage from "./components/ErrorMessage";
 import ReviewModal from "./components/ReviewModal";
 import ReviewsList from "./components/ReviewsList";
+import LandingPage from "./components/LandingPage";
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -240,7 +241,7 @@ function App() {
             onToggleFavorite={toggleFavorite}
             onBookClick={handleBookClick}
           />
-        ) : (
+        ) : books.length > 0 ? (
           <BookList
             books={books}
             onToggleFavorite={toggleFavorite}
@@ -249,7 +250,9 @@ function App() {
             getBookReviews={getBookReviews}
             getBookAverageRating={getBookAverageRating}
           />
-        )}
+        ) : !loading && !error ? (
+          <LandingPage onSearchClick={(query) => searchBooks(query, 'title')} />
+        ) : null}
 
         {selectedBook && (
           <BookModal
