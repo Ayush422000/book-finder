@@ -79,210 +79,233 @@ const BookModal = ({
   const bookReviews = getBookReviews ? getBookReviews(book.key) : [];
   const averageRating = getBookAverageRating ? getBookAverageRating(book.key) : 0;
   const reviewCount = bookReviews.length;
+  const description = getDescription();
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose} aria-label="Close modal">
-          ✕
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </button>
         
         <div className="modal-body">
-          <div className="modal-cover-section">
-            {largeCoverUrl && !imageError ? (
-              <img
-                src={largeCoverUrl}
-                alt={`Cover of ${book.title}`}
-                className="modal-cover"
-                onError={() => setImageError(true)}
-              />
-            ) : (
-              <div className="modal-cover-placeholder">
-                <div className="placeholder-content">
-                  <div className="book-icon">📖</div>
-                  <div className="placeholder-title">{book.title}</div>
-                </div>
-              </div>
-            )}
-            
-            <button
-              className={`modal-favorite-button ${isFavorite ? 'favorited' : ''}`}
-              onClick={onToggleFavorite}
-            >
-              {isFavorite ? '❤️ Remove from Favorites' : '🤍 Add to Favorites'}
-            </button>
-          </div>
-          
-          <div className="modal-info-section">
-            <h1 className="modal-title">{book.title}</h1>
-            <h2 className="modal-author">by {formatAuthors(book.authors)}</h2>
-            
-            {reviewCount > 0 && (
-              <div className="modal-rating-summary">
-                <div className="rating-display">
-                  <span className="rating-number">{averageRating}</span>
-                  <div className="rating-stars">
-                    {Array.from({ length: 5 }, (_, index) => (
-                      <span key={index} className={`star ${index < Math.round(averageRating) ? 'filled' : ''}`}>
-                        ⭐
-                      </span>
-                    ))}
+          {/* Top Section: Cover, Title, Author, Rating, Favorite Button */}
+          <div className="modal-header-section">
+            <div className="modal-cover-wrapper">
+              {largeCoverUrl && !imageError ? (
+                <img
+                  src={largeCoverUrl}
+                  alt={`Cover of ${book.title}`}
+                  className="modal-cover"
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <div className="modal-cover-placeholder">
+                  <div className="placeholder-content">
+                    <div className="book-icon">📖</div>
                   </div>
-                  <span className="rating-text">
-                    ({reviewCount} review{reviewCount !== 1 ? 's' : ''})
-                  </span>
-                </div>
-              </div>
-            )}
-            
-            <div className="modal-meta">
-              {book.first_publish_year && (
-                <div className="meta-item">
-                  <span className="meta-label">📅 Published:</span>
-                  <span className="meta-value">{book.first_publish_year}</span>
-                </div>
-              )}
-              
-              {book.publisher && (
-                <div className="meta-item">
-                  <span className="meta-label">🏢 Publisher:</span>
-                  <span className="meta-value">{book.publisher}</span>
-                </div>
-              )}
-              
-              {book.isbn && (
-                <div className="meta-item">
-                  <span className="meta-label">🔢 ISBN:</span>
-                  <span className="meta-value">{book.isbn}</span>
-                </div>
-              )}
-              
-              {book.pages && (
-                <div className="meta-item">
-                  <span className="meta-label">📄 Pages:</span>
-                  <span className="meta-value">{book.pages}</span>
-                </div>
-              )}
-              
-              {book.rating && (
-                <div className="meta-item">
-                  <span className="meta-label">⭐ Rating:</span>
-                  <span className="meta-value">{book.rating}/5</span>
-                </div>
-              )}
-              
-              {book.language && (
-                <div className="meta-item">
-                  <span className="meta-label">🌍 Language:</span>
-                  <span className="meta-value">{book.language.toUpperCase()}</span>
                 </div>
               )}
             </div>
             
-            {book.subjects && book.subjects.length > 0 && (
-              <div className="modal-subjects">
-                <h3>🏷️ Subjects</h3>
-                <div className="subjects-list">
-                  {book.subjects.map((subject, index) => (
-                    <span key={index} className="subject-tag">
-                      {subject}
-                    </span>
-                  ))}
+            <div className="modal-header-info">
+              <div className="modal-title-section">
+                <h1 className="modal-title">{book.title}</h1>
+                <h2 className="modal-author">by {formatAuthors(book.authors)}</h2>
+                
+                {reviewCount > 0 && (
+                  <div className="modal-rating-inline">
+                    <span className="rating-number">{averageRating}</span>
+                    <div className="rating-stars-inline">
+                      {Array.from({ length: 5 }, (_, index) => (
+                        <span key={index} className={`star ${index < Math.round(averageRating) ? 'filled' : ''}`}>
+                          ⭐
+                        </span>
+                      ))}
+                    </div>
+                    <span className="rating-text">({reviewCount})</span>
+                  </div>
+                )}
+              </div>
+
+              <button
+                className={`modal-favorite-button ${isFavorite ? 'favorited' : ''}`}
+                onClick={onToggleFavorite}
+                aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+              >
+                <span className="button-icon">{isFavorite ? '❤️' : '🤍'}</span>
+                <span className="button-text">{isFavorite ? 'In Favorites' : 'Add to Favorites'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Compact Meta Information */}
+          <div className="modal-meta-compact">
+            {book.first_publish_year && (
+              <div className="meta-badge">
+                <span className="meta-icon">📅</span>
+                <span className="meta-text">{book.first_publish_year}</span>
+              </div>
+            )}
+            {book.pages && (
+              <div className="meta-badge">
+                <span className="meta-icon">📄</span>
+                <span className="meta-text">{book.pages}p</span>
+              </div>
+            )}
+            {book.language && (
+              <div className="meta-badge">
+                <span className="meta-icon">🌍</span>
+                <span className="meta-text">{book.language.toUpperCase()}</span>
+              </div>
+            )}
+            {book.publisher && (
+              <div className="meta-badge">
+                <span className="meta-icon">🏢</span>
+                <span className="meta-text">{book.publisher}</span>
+              </div>
+            )}
+            {book.isbn && (
+              <div className="meta-badge">
+                <span className="meta-icon">🔢</span>
+                <span className="meta-text">{book.isbn}</span>
+              </div>
+            )}
+            {book.rating && (
+              <div className="meta-badge">
+                <span className="meta-icon">⭐</span>
+                <span className="meta-text">{book.rating}/5</span>
+              </div>
+            )}
+          </div>
+
+          {/* Subjects */}
+          {book.subjects && book.subjects.length > 0 && (
+            <div className="modal-subjects-compact">
+              {book.subjects.slice(0, 4).map((subject, index) => (
+                <span key={index} className="subject-tag-compact">
+                  {subject}
+                </span>
+              ))}
+              {book.subjects.length > 4 && (
+                <span className="subject-tag-compact more">
+                  +{book.subjects.length - 4}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Tabs Section */}
+          <div className="modal-tabs-section">
+            <div className="tab-buttons-compact">
+              <button 
+                className={`tab-button-compact ${activeTab === 'details' ? 'active' : ''}`}
+                onClick={() => setActiveTab('details')}
+                aria-label="View book details"
+              >
+                <span className="tab-icon">📖</span>
+                <span>Details</span>
+              </button>
+              <button 
+                className={`tab-button-compact ${activeTab === 'reviews' ? 'active' : ''}`}
+                onClick={() => setActiveTab('reviews')}
+                aria-label="View reviews"
+              >
+                <span className="tab-icon">💭</span>
+                <span>Reviews ({reviewCount})</span>
+              </button>
+            </div>
+            
+            <div className="tab-content-compact">
+              {activeTab === 'details' && (
+                <div className="details-tab-compact">
+                  {loadingInfo ? (
+                    <div className="loading-description-compact">
+                      <div className="loading-spinner-small"></div>
+                      <span>Loading description...</span>
+                    </div>
+                  ) : description ? (
+                    <div className="modal-description-compact">
+                      <p>{description.length > 300 ? `${description.substring(0, 300)}...` : description}</p>
+                    </div>
+                  ) : (
+                    <div className="no-description">
+                      <p>No description available for this book.</p>
+                    </div>
+                  )}
                 </div>
-              </div>
-            )}
-            
-            {loadingInfo && (
-              <div className="loading-description">
-                <div className="loading-spinner"></div>
-                <span>Loading description...</span>
-              </div>
-            )}
-            
-            <div className="modal-tabs">
-              <div className="tab-buttons">
-                <button 
-                  className={`tab-button ${activeTab === 'details' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('details')}
-                >
-                  📖 Details
-                </button>
-                <button 
-                  className={`tab-button ${activeTab === 'reviews' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('reviews')}
-                >
-                  💭 Reviews ({reviewCount})
-                </button>
-              </div>
+              )}
               
-              <div className="tab-content">
-                {activeTab === 'details' && (
-                  <div className="details-tab">
-                    {getDescription() && (
-                      <div className="modal-description">
-                        <h3>📝 Description</h3>
-                        <p>{getDescription()}</p>
-                      </div>
+              {activeTab === 'reviews' && (
+                <div className="reviews-tab-compact">
+                  <div className="reviews-header-compact">
+                    {onOpenReviewModal && (
+                      <button 
+                        className="write-review-button-compact"
+                        onClick={onOpenReviewModal}
+                      >
+                        <span>✍️</span>
+                        <span>Write Review</span>
+                      </button>
                     )}
                   </div>
-                )}
-                
-                {activeTab === 'reviews' && (
-                  <div className="reviews-tab">
-                    <div className="reviews-tab-header">
-                      <h3>User Reviews</h3>
-                      {onOpenReviewModal && (
-                        <button 
-                          className="write-review-button"
-                          onClick={onOpenReviewModal}
-                        >
-                          ✍️ Write a Review
-                        </button>
-                      )}
-                    </div>
-                    
-                    <ReviewsList
-                      bookKey={book.key}
-                      reviews={reviews || []}
-                      onDeleteReview={onDeleteReview}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-            
-            <div className="modal-actions">
-              <button 
-                className="action-button primary"
-                onClick={() => {
-                  const searchQuery = `${book.title} ${book.authors[0]}`;
-                  window.open(`https://www.google.com/search?q=${encodeURIComponent(searchQuery + ' buy book')}`, '_blank');
-                }}
-              >
-                🛒 Find to Buy
-              </button>
-              
-              <button 
-                className="action-button secondary"
-                onClick={() => {
-                  const searchQuery = `${book.title} ${book.authors[0]}`;
-                  window.open(`https://www.google.com/search?q=${encodeURIComponent(searchQuery + ' library')}`, '_blank');
-                }}
-              >
-                🏛️ Find in Library
-              </button>
-              
-              {book.key && (
-                <button 
-                  className="action-button secondary"
-                  onClick={() => {
-                    window.open(`https://openlibrary.org${book.key}`, '_blank');
-                  }}
-                >
-                  🔗 View on Open Library
-                </button>
+                  
+                  <ReviewsList
+                    bookKey={book.key}
+                    reviews={reviews || []}
+                    onDeleteReview={onDeleteReview}
+                  />
+                </div>
               )}
             </div>
+          </div>
+          
+          {/* Action Buttons - Compact and Organized */}
+          <div className="modal-actions-compact">
+            <button 
+              className="action-button-compact primary"
+              onClick={() => {
+                const searchQuery = `${book.title} ${book.authors[0]}`;
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(searchQuery + ' buy book')}`, '_blank');
+              }}
+              aria-label="Find book to buy"
+            >
+              <svg className="action-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+              </svg>
+              <span>Buy</span>
+            </button>
+            
+            <button 
+              className="action-button-compact secondary"
+              onClick={() => {
+                const searchQuery = `${book.title} ${book.authors[0]}`;
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(searchQuery + ' library')}`, '_blank');
+              }}
+              aria-label="Find book in library"
+            >
+              <svg className="action-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+              </svg>
+              <span>Library</span>
+            </button>
+            
+            {book.key && (
+              <button 
+                className="action-button-compact secondary"
+                onClick={() => {
+                  window.open(`https://openlibrary.org${book.key}`, '_blank');
+                }}
+                aria-label="View on Open Library"
+              >
+                <svg className="action-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z" fill="currentColor"/>
+                </svg>
+                <span>Open Library</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

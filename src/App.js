@@ -21,6 +21,20 @@ function App() {
   const [searchHistory, setSearchHistory] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(() => {
+    const savedTheme = localStorage.getItem("darkTheme");
+    return savedTheme ? JSON.parse(savedTheme) : false;
+  });
+
+  // Apply dark theme on mount and save preference to localStorage
+  useEffect(() => {
+    if (darkTheme) {
+      document.documentElement.classList.add("dark-theme");
+    } else {
+      document.documentElement.classList.remove("dark-theme");
+    }
+    localStorage.setItem("darkTheme", JSON.stringify(darkTheme));
+  }, [darkTheme]);
 
   // Load favorites and reviews from sessionStorage on component mount
   useEffect(() => {
@@ -39,6 +53,12 @@ function App() {
     const savedReviews = localStorage.getItem("bookReviews");
     if (savedReviews) {
       setReviews(JSON.parse(savedReviews));
+    }
+
+    // Apply dark theme on initial load
+    const savedTheme = localStorage.getItem("darkTheme");
+    if (savedTheme && JSON.parse(savedTheme)) {
+      document.documentElement.classList.add("dark-theme");
     }
   }, []);
 
@@ -214,45 +234,74 @@ function App() {
     setShowReviewModal(false);
   };
 
+  const goToLandingPage = () => {
+    setBooks([]);
+    setShowFavorites(false);
+    setError("");
+    setSelectedBook(null);
+    setLoading(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const toggleDarkTheme = () => {
+    setDarkTheme((prev) => !prev);
+  };
+
   return (
-    <div className="App">
+    <div className={`App ${darkTheme ? 'dark-theme' : ''}`}>
       <Header
         favoriteCount={favorites.length}
         showFavorites={showFavorites}
         onToggleFavorites={() => setShowFavorites(!showFavorites)}
+        onGoHome={goToLandingPage}
+        darkTheme={darkTheme}
+        onToggleDarkTheme={toggleDarkTheme}
       />
 
       <main className="main-content">
-        <SearchBar
-          onSearch={searchBooks}
-          searchHistory={searchHistory}
-          onClearHistory={clearSearchHistory}
-        />
+        {!showFavorites && books.length === 0 && !loading && !error ? (
+          <>
+            <SearchBar
+              onSearch={searchBooks}
+              searchHistory={searchHistory}
+              onClearHistory={clearSearchHistory}
+              isLandingPage={true}
+            />
+            <LandingPage onSearchClick={(query) => searchBooks(query, 'title')} />
+          </>
+        ) : (
+          <>
+            <SearchBar
+              onSearch={searchBooks}
+              searchHistory={searchHistory}
+              onClearHistory={clearSearchHistory}
+              isLandingPage={false}
+            />
 
-        {error && (
-          <ErrorMessage message={error} onDismiss={() => setError("")} />
+            {error && (
+              <ErrorMessage message={error} onDismiss={() => setError("")} />
+            )}
+
+            {loading && <LoadingSpinner />}
+
+            {showFavorites ? (
+              <FavoritesList
+                favorites={favorites}
+                onToggleFavorite={toggleFavorite}
+                onBookClick={handleBookClick}
+              />
+            ) : books.length > 0 ? (
+              <BookList
+                books={books}
+                onToggleFavorite={toggleFavorite}
+                isFavorite={isFavorite}
+                onBookClick={handleBookClick}
+                getBookReviews={getBookReviews}
+                getBookAverageRating={getBookAverageRating}
+              />
+            ) : null}
+          </>
         )}
-
-        {loading && <LoadingSpinner />}
-
-        {showFavorites ? (
-          <FavoritesList
-            favorites={favorites}
-            onToggleFavorite={toggleFavorite}
-            onBookClick={handleBookClick}
-          />
-        ) : books.length > 0 ? (
-          <BookList
-            books={books}
-            onToggleFavorite={toggleFavorite}
-            isFavorite={isFavorite}
-            onBookClick={handleBookClick}
-            getBookReviews={getBookReviews}
-            getBookAverageRating={getBookAverageRating}
-          />
-        ) : !loading && !error ? (
-          <LandingPage onSearchClick={(query) => searchBooks(query, 'title')} />
-        ) : null}
 
         {selectedBook && (
           <BookModal

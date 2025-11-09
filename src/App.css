@@ -5,6 +5,12 @@
   animation: gradientShift 15s ease infinite;
   position: relative;
   overflow-x: hidden;
+  transition: background 0.3s ease;
+}
+
+.App.dark-theme {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+  background-size: 200% 200%;
 }
 
 @keyframes gradientShift {
@@ -22,7 +28,9 @@
 .main-content {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px 40px;
+  padding: 20px 20px 40px;
+  position: relative;
+  z-index: 1;
 }
 
 /* Responsive Design */

@@ -78,13 +78,8 @@ const LandingPage = ({ onSearchClick }) => {
       {/* Hero Section */}
       <section className={`hero-section ${animated ? 'animate' : ''}`}>
         <div className="hero-content">
-          <div className="hero-badge">
-            <span className="badge-icon">✨</span>
-            <span>Discover Millions of Books</span>
-          </div>
-          
           <h1 className="hero-title">
-            <span className="gradient-text">Find Your Next</span>
+            <span className="gradient-text">Discover Your Next</span>
             <br />
             <span className="gradient-text-alt">Great Read</span>
           </h1>
